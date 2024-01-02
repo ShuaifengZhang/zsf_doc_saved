@@ -10,6 +10,7 @@ set(C++_FILE_LIST
     ./stl_map_multimap_unorderedmap_unorderedmultimap.cpp
     ./stl_stack_queue_priorityqueue.cpp
     ./functor_predicate.cpp
-    ./functor_lambda.cpp)
+    ./functor_lambda.cpp
+    ./stl_algorithm.cpp)
 
 add_library(zsf_stl_src SHARED ${C++_FILE_LIST})

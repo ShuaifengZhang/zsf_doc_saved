@@ -7,7 +7,7 @@
 using namespace std;
 /*
 1) lambda表达式(也叫lambda函数)是一种定义匿名函数对象的简洁方式，这是C++11新增的。可将lambda表达式视为
-包含公有opertor()的匿名结构或类，从这种意义上来说，lmabda属于函数对象。先看下面：
+包含公有opertor()的匿名结构或类，从这种意义上来说，lambda属于函数对象。先看下面：
     template <typename elementType>
     struct DisplayElement
     {
@@ -46,7 +46,13 @@ using namespace std;
 4) 在lambda表达式中，可使用函数中的局部变量吗？
     答：可使用捕获列表来传递局部变量: [var1, var2,...N](Type& param1, ...) {...expression;}
     要传递所有的局部变量，可使用如下语法：[=](Type& param1,...) {...expression;}
+
+5) lambda表达式的状态参数是如何传递的？按值传递还是按引用传递？
+    答：编写下面这样包含捕获列表的lambda表达式时：[var1, var2,...N](Type& param1, ...) {...expression;}
+    将复制状态参数var1和var2,而不是按引用传递它们。如果要按引用传递它们，应使用下面的语法，在这种情况下，对状态
+    变量所作的修改在lambda表达式外部仍将有效：[&var1, &var2,...&N](Type& param1, ...) {...expression;}
  */
+
 template <typename T>
 void DisplayContents(const T& input)
 {

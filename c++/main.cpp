@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-    //stl_test test;
+    stl_test test;
     //test.stl_base_string_test();
     //test.stl_bitset_test();
     //test.stl_vecotr_deque_test();
@@ -15,9 +15,12 @@ int main(int argc, char* argv[])
     //test.stl_stack_queue_priorityqueue_test();
     //test.functor_predicate_test();
     //test.functor_lambda_test();
-    multi_thread_test thread;
+    test.stl_algorithm_test();
+   
+    /*多线程测试*/
+    //multi_thread_test thread;
     //thread.thread_pool_test();
-    thread.async_packaged_task_promise_test();
+    //thread.async_packaged_task_promise_test();
 
     return 0;
 }

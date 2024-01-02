@@ -18,6 +18,8 @@ public:
     /*函数对象/谓词/lambda表达式*/
     void functor_predicate_test();
     void functor_lambda_test();
+    /*通用算法*/
+    void stl_algorithm_test();
 };
 
 #endif
