@@ -46,7 +46,9 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
         print(dir(builtins))
 
 5) 常用内置数据类型
-    a. Number(数字，元素不可修改，即即不可变类型)
+    Python中的对象类型分为两种：可变类型(可以对该类型对象中保存的元素值做修改)和不可变类型(该类型对象中保存所保存的元素值不允许修改，只能通过给
+    对象整体赋值来修改对象所保存的数据。但此时实际上就是创建了一个新的不可变类型的对象，而不是修改原对象的值)。
+    a. Number(数字，不可变类型)
         a1. 有int(整型)、float(浮点型)、complex(复数类型)共三种不同的数字类型。
         a2. Python中提供了Boolean(布尔)类型，它是int的子类型，在作为数字参与运算时，False自动转为0，
             True自动转为 1。当给bool函数传入下列参数时，会返回Flase：定义为假的常量，包括None或Flase;
@@ -55,17 +57,37 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
             环境中浮点数的取值范围和精度。
         a4. 复数的实部和虚部都是一个浮点数。在生成复数时，也可以使用complex([real[,imag]])如果省略虚部imag,
             则返回的复数为real+0j。
-    b. String(字符串，元素不可修改，即不可变的序列)
+        a5 小整数对象池：Python 为了优化速度，避免整数频繁申请和销毁内存空间，把范围在 [-5, 256] 之间的数字放在提前建立好的小整数对象池里面，不会被垃圾回收，
+           在这范围内的数值如果相等，地址也就相同，因为使用的都是同一个对象。
+                a = 257    #在Python中，变量是可以被赋值的标签，也可以说变量指向特定的值。
+                b = 257
+                print(id(a))
+                print(id(b))
+                a = 256
+                b = 256
+                print(id(a))
+                print(id(b))
+                a = -5
+                b = -5
+                print(id(a))
+                print(id(b))
+                a = -6
+                b = -6
+                print(id(a))
+                print(id(b))
+
+    b. String(字符串序列，不可变类型)
         b1. Python中不区分字符和字符串。
         b2. Python中的字符串可以写在一对单引号中，也可以写在一对双引号或一对三双引号中。
         b3. Python中，对序列的下标有二种索引方式，从前向后索引(第一个字符下标为0)和从后向前索引(最后一个字符
-            下标为-1，其他字符的下标是后一个字符下标减1)。截取子串(切片，方法为s[start:stop]或s[start:stop:step]或silce(start:stop:step)，其中不包括stop位置上的这个字符，如果省略start则表示从第一个元素开始，如果省略stop则表示从start位置开始一直到最后一个元素)时既可以使用其中一种下标索引方式，也可以
-            同时混合使用。
+            下标为-1，其他字符的下标是后一个字符下标减1)。截取子串(切片，方法为s[start:stop]或s[start:stop:step]或silce(start:stop:step)，
+            其中不包括stop位置上的这个字符，如果省略start则表示从第一个元素开始，如果省略stop则表示从start位置开始一直到最后一个元素)时既可以
+            使用其中一种下标索引方式，也可以同时混合使用。
         b4. 如果要截取字符串的一个字符可以使用s[idx]。
         b5. 使用下标[]虽然可以访问字符串中的元素，但是不能修改。例如s[1] = '1'就会报错。
         b6. 空字符串直接print(str(""))在屏幕上是看不到的，可以使用print([str("")])，这样的话会输出['']
 
-    c. List(列表，元素可修改，即可变的序列)
+    c. List(列表序列，可变类型)
         c1. 列表是可变的，这也意味着可随程序的运行增删元素，列表的长度会动态变化。需要注意的是列表中包含的元素
             类型可以不相同并且各元素地址并不一定是连续的，每个元素都有自己的地址。列表这个整体本身也有自己的地址。
         c2. 列表的索引方式与字符串中元素的索引方式完全相同。切片后返回的仍是一个列表；但是如果使用ls[idx]则返回的
@@ -74,7 +96,7 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
             的值(a可以是任意类型，包括列表)，也可以通过ls[start:stop] = b这种方式修改一个元素或同时修改连续多个元素的值(b可以是另一个列表)。
         c4. 创建一个起始于第一个元素终止于最后一个元素的切片[:]，会复制一个列表(创建一个副本)。
 
-    d. Tuple(元组，元素不可修改，即不可变的序列)
+    d. Tuple(元组序列，不可变类型)
         d1. 与list类似，不同的是元组的所有元素都在一对小括号()中，且元组中的元素不能修改。这里需要注意的是严格
             来说元组是由逗号标识的，小括号()只是让元组看起来更清晰而已。
             my_tuple = (3,)
@@ -82,7 +104,7 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
             my_tuple1 = 3,  #会封包成一个元组，如果只定义一个元素的元组必须加上逗号，若my_tuple1赋为3，输出3
             print(my_tuple1) #(3,)
 
-    e. Set(集合，set是可变的，frozenset是不可变的)
+    e. Set(集合，set是可变类型，frozenset是不可变类型)
         e1. 集合中也可以包含多个不同类型的元素，但集合中的各元素无序(集合中的元素是没有顺序的，输出不一定按照定义
             的顺序输出，并且每次输出的结果可能不一样)、不允许有相同的元素(集合会自动去重)且元素必须是可哈希的对
             象(可哈希对象是指拥有__hash()__(self)内置函数的对象；需要知道的是列表、集合和字典类型的数据不是可哈希对象，所以它们不能作为集合中的元素)。
@@ -94,7 +116,7 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
         e5. 和字符串、列表、元组等序列类型不同，集合中的元素不能使用下标方式访问。集合主要用来做并、交、差等集合
             运算，以及基于集合进行元素的快速检索。
 
-    f. Dictionary(字典，可变的)
+    f. Dictionary(字典，可变类型)
         f1. 是另一种无序的对象集合。但与集合不同，字典是一种映射类型，每一个元素是一个键(key):值(value)对。在一个
             字典对象中，键必须是唯一的，即不同元素的键不能相同；另外键必须是可哈希数据, 值可以是任意类型。
         f2. 键只能是不可变的类型？另外如果键重复，那么重复键对应的值后面会把前面的值覆盖掉。
@@ -111,7 +133,23 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
             列表。
         f6. 在访问字典中的元素时不能通过数字下标方式访问，而是通过键访问，即[key]。
 
-6) 运算符
+6) 浅层拷贝和深层拷贝
+    Python中的赋值语句不复制对象，只是建立引用关联，对于可变数据，有时我们不希望直接对它进行修改，因为这可能会导致一些意外的情况发生，所以我们
+    就可以把它copy一份，对它的副本进行操作。这种copy操作又分为浅层copy和深层copy，比如 list.copy()、dict.copy()、set.copy() 和切片都属于浅层copy。
+    另外在Python标准库中提供的copy模块中，也提供了通用的浅层拷贝(copy.copy())和深层拷贝(copy.deepcopy())操作。
+    a. 浅层拷贝: 只考虑最外层的数据类型。如果最外层的数据类型是可变的，则（最外层）发生拷贝；如果最外层的数据类型是不可变的，则不发生拷贝。
+        a1. 如果被拷贝的对象本身是可变的数据类型，则该数据本身会发生拷贝，但是其中的元素仍为引用关系。
+        a2. 如果被拷贝的对象本身是不可变的数据类型，则浅拷贝不会发生拷贝，只是引用关系而已。
+        综上，执行浅拷贝操作不会发生拷贝的数据类型有：number, str, tuple；执行浅拷贝操作会发生拷贝的数据类型有：list, dict, set
+    b. 深层拷贝:
+        b1. 如果拷贝的对象本身是可变的数据类型，则发生拷贝；
+        b2. 如果拷贝的对象本身是不可变的数据类型，但其中包含有可变的数据，则仍然会对该对象发生拷贝；
+        b3. 如果拷贝的对象本身是不可变的数据类型，并且其中也不包含任何可变的数据类型，则不发生拷贝，实为引用关系。
+        b4. 对于其中的元素是否发生拷贝，可以对该元素以及上述三条进行再次判定。
+        综上，执行深拷贝操作不会发生拷贝的数据类型有：number, str, tuple(其中不存在任何的可变类型数据时) 。执行深拷贝操作会发生拷贝的数据类型有：list, 
+        tuple(其中存在任意可变类型数据时)，dict , set
+
+7) 运算符
     a. 占位运算符(比如%d、%f或%F等)
         a1. 比如s1='%s上次数学成绩为%5d, 本次成绩为%5d, 成绩提高%08.2F' %('小明'， 85， 90， 5/85)
         a2. 由于%作为占位符的前缀字符，因此对于有占位符的字符串，表示一个%时需要写成%%；比如执行如下:
@@ -152,12 +190,13 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
         i2. *(重复)：x*n,将序列x中的元素重复n次，生成一个新的序列。
 
     
-7) pass(可以用三个点...来代替)
+8) pass(可以用三个点...来代替)
     a. pass表示一个空操作，只起到一个占位符的作用，执行时什么都不做。
     b. 在某些必要的语句还没有编写的情况下，如果要运行程序，则可以先在必要语句处写上pass,使得程序不存在语法
         错误使得程序可以正常运行。
 
-8) 条件语句(其中elif和else都是可选项)
+9) 流程控制
+    a. 条件语句(其中elif和else都是可选项)
         if 条件1:
             语句序列
         elif 条件2：
@@ -165,25 +204,25 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
         ......
         else:
             语句序列
-10) 循环语句
-    a. for循环
-        与C/C++中的for循环不同，Python中的for循环用于遍历可迭代对象中的每一个元素，并根据当前访问的元素做
-        数据处理，其语法如下：
-            for 变量名 in 可迭代对象：
+    b. 循环语句
+        b1. for循环
+            与C/C++中的for循环不同，Python中的for循环用于遍历可迭代对象中的每一个元素，并根据当前访问的元素做
+            数据处理，其语法如下：
+                for 变量名 in 可迭代对象：
+                    语句序列
+            需要注意range([beg],end,[step])函数中step允许为负值，如果beg省略默认从0开始，生成的对象中不包含end。
+            使用for循环时，如果需要遍历一个数列中的所有数字，则通常使用range函数返回一个可迭代对象(这个可迭代对象
+            是一个不可变的序列)。通过list可以将该对象转换为列表。
+        b2. while循环
+            while 循环条件:
                 语句序列
-        需要注意range([beg],end,[step])函数中step允许为负值，如果beg省略默认从0开始，生成的对象中不包含end。
-        使用for循环时，如果需要遍历一个数列中的所有数字，则通常使用range函数返回一个可迭代对象(这个可迭代对象
-        是一个不可变的序列)。通过list可以将该对象转换为列表。
-    b. while循环
-        while 循环条件:
-            语句序列
-    c. break
-        用于跳出for循环或while循环。对于多重循环，跳出它所在的最近的那重循环。
-    d. continue
-        用于结束本次循环并且开始下一次循环。
-    e. else
-        在for循环和while循环后面可以有else分支，当for循环已经遍历完或while循环的条件为Flase时，就会执行else
-        分支中的语句。需要注意的是当for或while循环中通过break跳出时，循环后的else分支不会执行。
+        b3. break
+            用于跳出for循环或while循环。对于多重循环，跳出它所在的最近的那重循环。
+        b4. continue
+            用于结束本次循环并且开始下一次循环。
+        b5. else
+            在for循环和while循环后面可以有else分支，当for循环已经遍历完或while循环的条件为Flase时，就会执行else
+            分支中的语句。需要注意的是当for或while循环中通过break跳出时，循环后的else分支不会执行。
 
 11) 函数
     a. 默认参数：
@@ -314,12 +353,19 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
 
 12) 类与对象(与C++不同，Python中提供的基本数据类型也是类，比如int、float等)
     a. 与类相关的3个内置函数
-        a1. isinstance()
-            用于判断一个对象所属的类是否是指定类或指定类的子类
-        a2. issubclass()
-            用于判断一个类是否是另一个类的子类
-        a3. type()
-            用于获取一个对象所属的类；需要注意type(int)返回<class type>，说明int这个类型本身也是一个对象，它是由type生成的(type为metaclass)。
+        a1. isinstance(object, classinfo) 和 issubclass(class, classinfo)与继承相关。前者用于判断一个对象所属的类是否是指定类或指定类的子类，
+        后者用于判断一个类是否是另一个类的子类
+        a2. type()用于获取一个对象所属的类；需要注意type(int)返回<class type>，说明int这个类型本身也是一个对象，它是由type生成的(type为metaclass)。
+            '''所有的类都是object的子类(object的__bases__属性为空，其余的都为<class "object">)，包括type'''
+            print(issubclass(type, object))    # 也可以通过print(type.__bases__)查看基类
+            print(issubclass(int, object))
+            print(issubclass(dict, object))
+            '''type是用来生成类对象的(比如int类就是type类生成的对象)，所有类都有type类的实例对象，包括object'''
+            print(isinstance(object, type))
+            print(isinstance(int, type))
+            print(isinstance(dict, type))
+            print(isinstance(type, type))    # 由此可见type是一个类，同时也是一个对象(type的对象)
+
     b. 可以直接创建新的类，也可以基于一个或多个已有的类创建新的类；既可以创建一个空的类(pass)，然后动态添加属性和方法，也可以在创建类的同时设置
         属性和方法。类的定义形式如下：
             class 类名：
@@ -339,20 +385,27 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
         d5. 动态定义类属性和实例属性：当使用实例对象修改的实例属性不存在时，会增加一个实例属性(动态地为已创建地对象绑定新的属性，需要注意当为一个
             对象动态绑定新的属性后，只是该对象具有该属性，其他对象和类都没有该动态绑定的属性)；当使用类修改的类属性不存在时会增加一个类属性。当然
             对于方法也是类似。 这种除了在定义类时定义属性和方法外，还可以动态地为已经创建的对象或类绑定新的属性和方法的机制机制称为动态扩展。当然在
-            定义类时，Python也提供了__slots__变量以限制这种可动态扩展的属性。        
+            定义类时，Python也提供了__slots__变量以限制这种可动态扩展的属性。
+        d6. 类中的属性可以直接访问和赋值，这为类的使用者提供了方便，但也带来了问题：类的使用者可能会给一个属性赋上超出有效范围的值。为了解决这个问题，
+            Python提供了@property装饰器，可以将类中属性的访问和赋值操作自动转为方法调用，这样可以在方法中对属性值的取值范围做一些条件限定。        
     e. 方法
         e1. 类中的方法分为两类：内置方法和其他方法(对象方法、类方法、静态方法)，其中内置方法是在特定情况下由系统自动执行。
         e2. 在定义类的对象方法时，要求第一个参数需要对应调用方法时所使用的实例对象(一般约定俗成命名为self，当然也可以使用别的名)。在通过类的
             实例对象调用类中的普通方法时，并不需要传入self参数的值，self会自动对应调用该方法时所使用的对象。需要注意必须通过实例对象调用，而不能
             通过类名直接调用(若真需要通过类名调用的话其实也有办法，就是需要手动将实例对象作为第一个参数传入，稍微有点麻烦)。因为通过实例对象调用时
             会自动将该实例对象传给self，而通过类调用时则不会有这个隐含的参数传递。
-        e4. 类方法是指用@classmethod修饰的方法，其第一个参数是类本身(而不是类的实例对象)。类方法的特点是既可以通过类名直接调用，也可以通过类的实例
-            对象调用(本质上是使用实例对象的类型去调用类方法，即type(实例对象名).类方法名)
+        e4. 类方法是指用@classmethod修饰的方法，其第一个参数是类本身(而不是类的实例对象)。类方法的特点是既可以通过类名直接调用(调用时类方法的第一个
+            参数会隐式接受类)，也可以通过类的实例对象调用(本质上是使用实例对象的类型去调用类方法，即type(实例对象名).类方法名),
         e5. 静态方法是使用@staticmethod修饰的方法。与类方法相同，静态方法也可以直接通过类名调用，也可以通过类的实例对象调用。与类方法不同的是，静态
-            方法中没有类方法中的第一个参数。
-        e6. 类中的属性可以直接访问和赋值，这为类的使用者提供了方便，但也带来了问题：类的使用者可能会给一个属性赋上超出有效范围的值。为了解决这个问题，
-            Python提供了@property装饰器，可以将类中属性的访问和赋值操作自动转为方法调用，这样可以在方法中对属性值的取值范围做一些条件限定。
+            方法中没有类方法中的第一个参数。静态方法和类方法的区别在继承时会体现出来。
+                @classmethon    # 内置的类方法装饰器
+                def teach(cls, course):    # 类方法：注意这里的cls也是约定俗成的名字。
+                    print(f"{cls.company}的来时在讲{course}课")
+                    print(f"{Teacher.company}的来时在讲{course}课")    #直接使用类名Teacher也可以
 
+                @staticmethod    # 内置的静态方法装饰器
+                def teach(course): # 静态方法，注意这里没有cls，函数体中直接固定使用类名，这也是和类方法的区别
+                    print(f"{Teacher.company}的来时在讲{course}课")    # Teacher是类名
 
     f. 构造(__init__)和析构(__del__)：创建和销毁对象时自动执行的内置方法
         f1. __new__用来创建实例对象并返回，__init__用来给返回的实例对象制定属性(初始化)：
@@ -381,8 +434,8 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
         通过在一个类中定义__call__方法，可以支持如下写法：对象名(实参表) #等价于对象名.__call__(实参表)
     
     h. 其他的一些常用内置方法
-            g1. __str__方法：在调用str函数对类对象进行处理时或调用format()和print()时会自动执行，__str__方法的返回值必须是字符串。
-            g2. 比较对象大小的内置方法：
+            h1. __str__方法：在调用str函数对类对象进行处理时或调用format()和print()时会自动执行，__str__方法的返回值必须是字符串。
+            h2. 比较对象大小的内置方法：
                 __gt__(self, other)   #进行self > other运算时自动执行。
                 __lt__(self, other)
                 __ge__(self, other)
@@ -390,59 +443,142 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
                 __eq__(self, other)
                 __ne__(self, other)
     i. 继承
-        h1. 通过继承，可以基于已有类创建新的类，新类除了继承已有类的所有属性和方法(子类继承后会拥有父类中的所有的非私有属性和方法)，
+        i1. 通过继承，可以基于已有类创建新的类，新类除了继承已有类的所有属性和方法(子类继承后会拥有父类中的所有的非私有属性和方法)，
             还可以根据需要增加新的属性和方法，另外子类可以对父类中的方法进行重新定义。继承可以分为单继承和多重继承。
-        h2. 定义子类时需要指定父类，其语法格式为：
+        i2. 定义子类时需要指定父类，其语法格式为：
             class 子类名(父类名1，父类名2，...,父类名N)
                 语句1
                 语句2
                 ...
                 语句N
-        h3. 在Python中，所有的数据类型都是类类型，所有的变量都是类对象。所有的类都直接或间接继承自object类，即object是Python类层次
+        i3. 在Python中，所有的数据类型都是类类型，所有的变量都是类对象。所有的类都直接或间接继承自object类，即object是Python类层次
             结构中的第一层的类。我们在定义类时如果没有显式地为其指定父类，则该类会有一个隐含的父类object。
-        h4. 在Python中提供了两个和继承相关的内置函数：
-            isinstance(对象名，类名)
-            issubclass(类名1， 类名2)
     
     j. 多态
-        i1. 通过多态，可以使得在执行同一条语句时，能够根据实际使用的对象类型决定调用哪个方法。
-        i2. 方法重写：方法重写是指子类可以对从父类继承过来的方法进行重新定义，从而使得子类可以表现出与父类对象不同的行为。方法重写
+        j1. Python中的多态性是指具有不同内容的方法可以使用相同的方法名，即可以用一个方法名调用 不同内容的方法。
+            class Apple:
+                def change(self):
+                    return '啊~ 我变成了苹果汁!'
+            class Banana:
+                def change(self):
+                    return '啊~ 我变成了香蕉汁!'
+            class Mango:
+                def change(self):
+                    return '啊~ 我变成了芒果汁!'
+            class Juicer:
+                def work(self, fruit):
+                    print(fruit.change())
+            """
+            三个内容不同的change方法使用相同的名字命名,只要改变change的调用对象, 就可以调用不同内容的方法
+            """
+            a = Apple()
+            b = Banana()
+            m = Mango()
+            j = Juicer()
+            j.work(a)
+            j.work(b)
+            j.work(m)
+        j2. 通过多态，可以使得在执行同一条语句时，能够根据实际使用的对象类型决定调用哪个方法。
+        j3. 方法重写：方法重写是指子类可以对从父类继承过来的方法进行重新定义，从而使得子类可以表现出与父类对象不同的行为。方法重写
             是多态的基础。从下面示例的结果可以看出，在调用PrintPersonInfo时，系统会根据传入的实参对象的类型决定执行哪个类中定义
             的PrintInfo方法，这就是所谓的多态，即在执行同样代码的情况下，系统会根据对象实际所属的类去调用相应类中的方法。
-    
-            class Persion:
-                def __init__(self, name):
-                    self.name=name
-                def PrintInfo(self)
-                    print('姓名：%s'%self.name)
-            class Student(Persion):
-                def __init__(self, sno, name):
-                    self.sno=sno
-                    self.name=name
-                def PrintInfo(self)
-                    print('学号:%s, 姓名:%s'%(self.sno, self.name))
-            def PrintPersonInfo(person):
-                print('结果', end=‘#’)
-                persion.PrintInfo()
-            
-            if __name__=='__main__':
-                p=Person('xiaoming')
-                stu=Student('1810100', 'xiaoming')
-                PrintPersonInfo(p)  # 结果#姓名：xiaoming
-                PrintPersonInfo(stu)    # 结果#学号: 1810100, 姓名：xiaoming
+                class Persion:
+                    def __init__(self, name):
+                        self.name=name
+                    def PrintInfo(self)
+                        print('姓名：%s'%self.name)
+                class Student(Persion):
+                    def __init__(self, sno, name):
+                        self.sno=sno
+                        self.name=name
+                    def PrintInfo(self)
+                        print('学号:%s, 姓名:%s'%(self.sno, self.name))
+                def PrintPersonInfo(person):
+                    print('结果', end=‘#’)
+                    persion.PrintInfo()
+
+                if __name__=='__main__':
+                    p=Person('xiaoming')
+                    stu=Student('1810100', 'xiaoming')
+                    PrintPersonInfo(p)  # 结果#姓名：xiaoming
+                    PrintPersonInfo(stu)    # 结果#学号: 1810100, 姓名：xiaoming
     k. super方法
-        j1. super是内置的类，可以调用指定类的父类(可放在类内也可放在类外)，它的适用场景为：在子类重写父类的方法后，想再使用父类
+        k1. super是内置的类，可以调用指定类的父类(可放在类内也可放在类外)，它的适用场景为：在子类重写父类的方法后，想再使用父类
             的该方法。
-        j2. super方法用于获取(返回)父类的代理对象，以执行已在子类中被重写的父类方法。其有两个参数，第一个参数是要获取父类代理对象
+                class Animal:
+                    def eat(self):
+                        print("吃东西")
+                class Cat(Animal):
+                    def eat(self):
+                        print("吃鱼")
+                class Ragdoll(Cat):
+                    def eat(self):
+                        print("喝咖啡")
+
+                rd = Ragdoll()
+                rd.eat() # rd调用Ragdoll类中的对象方法
+                super(Ragdoll, rd).eat() # rd调用Ragdoll父类的对象方法(super返回ragdoll的父类的代理对象)
+                super(Cat, rd).eat() # rd调用Cat父类的对象方法
+
+                c = Cat()
+                c.eat() # c调用Cat类中的对象方法
+                super(Cat, c).eat() # c调用Cat父类的对象方法
+
+        k2. super方法用于获取(返回)父类的代理对象，以执行已在子类中被重写的父类方法。其有两个参数，第一个参数是要获取父类代理对象
             的类名。第二个参数可以是对象名或类名，如果传入对象名，则该对象所属的类必须是第一个参数指定的类或该类的子类，找到的父类
             对象的self会绑定到这个对象上；如果传入类名，则该类必须是第一个参数指定的类的子类。super([类名[, 对象名或类名]])      
-        j3. 在一个类A的定义中调用super方法时，可以将两个参数都省略，此时super()等价于super(A, self)，即获取当前A的父类代理对象，且
+        k3. 在一个类A的定义中调用super方法时，可以将两个参数都省略，此时super()等价于super(A, self)，即获取当前A的父类代理对象，且
             获取到的父类代理对象中的self绑定到当前A类对象的self上。
     l. 元类(metaclass)
-        k1. 一个metaclass就是一个用来创建其他class的类，而type就是所有类默认的metaclass。可以将metaclass看成创建类时所使用的模板，
+        l1. 一个metaclass就是一个用来创建其他class的类，而type就是所有类默认的metaclass。可以将metaclass看成创建类时所使用的模板，
             也可以理解为用于创建类的类。
-        k2. 你可以在定义的时候指定metaclass：例如class Person(object, metaclass=type) #这里扩号中的都是默认的
-        k3. 我们也可以以type作为父类定义自己的metaclass，然后用该metaclass再去创建类，最后用类创建对象。
+        l2. 你可以在定义的时候指定metaclass：例如class Person(object, metaclass=type) #这里扩号中的都是默认的
+        l3. 我们也可以以type作为父类定义自己的metaclass，然后用该metaclass再去创建类，最后用类创建对象。
+                class MyMetaclass(type):    # 自定义一个metaclass
+                    @staticmethod
+                    def __new__(cls, *args, **kwargs):
+                        print(args) # 从打印可以看出，Python会将类名Student、父类object等传进来
+                        class_ = super().__new__(cls, *args)    # 造出的对象是类本身
+                        # class_.freedom = True
+                        if kwargs:
+                            for name, value in kwargs.items():
+                                setattr(class_, name, value)
+                        return class_
+            
+                '''调用元类MyMetaclass的__new__来造Student类，若希望使用元类造出的类里面还有别的属性比如country，可以传递参数'''
+                class Student(object, metaclass=MyMetaclass, country="China", freedom=True):
+                    pass
+
+                print(Student.country, Student.freedom)  # China True
+
+    m. 组合
+        如果一个类中的属性和方法越来越多，也可以将其中的一部分提取出来，组成一个独立的类。将大型类拆分成多个协同工作的小类，这种方法称为组合。
+        m1. 假设有类A，将其一部分方法(比如funcb())和属性拆分独立出来组成类B。这个时候只需要在类A的方法__init__()中添加一行格式形如：" self.bbb = B(xxx) " 
+        的代码。这行代码让Python创建一个新的类B的实例，并将该实例赋给属性bbb。每当__init__()方法被调用时，都将执行该操作，因此现在每个类A实例都包含一个自
+        动创建的类B实例
+        m2. 此时创建一个类A的实例, 并将其赋给变量aaa；可以使用代码 aaa.bbb.funcb() 让Python在实例aaa中查找属性bbb, 并对存储在该属性中的B实例调用funcb()方法。    
+
+    n. 鸭子类型(duck typing)
+        在鸭子类型中关注的不是对象所属的类，而是一个对象能够如何使用。在Python中编写一个函数，传递实参前其参数的类型
+        并不确定，在函数中使用形参进行操作时，只要传入的对象能够支持该操作程序，就能正常执行。例如：
+            class Person:
+                def CaptureImage(self):
+                    print('Person_CaptureImage')
+            class Camera:
+                def CaptureImage(self):
+                    print('Camera_CaptureImage')
+            def CaptureImageTest(arg):
+                arg.CaptureImage()
+            if __name__=='__main__':
+                p=Person()
+                c=Camera()
+                CaptureImageTest(p) #输出Person_CaptureImage
+                CaptureImageTest(c) #输出Camera_CaptureImage
+
+        可以看出鸭子类型与前面介绍的多态非常类似，实际上Python中的多态也是借助鸭子类型实现，与C++、Java等语言中的多态并不是同一含义。
+
+    o. 单例模式
+        指的是在程序运行时确保某个类最多只有一个实例对象。
 
 13) monkey patch(猴子补丁)
     a. 是指在运行时动态替换已有代码，而不需要修改原始代码。
@@ -461,31 +597,7 @@ h. Python是一种弱类型的语言，变量的类型由其值的类型决定�
     块中的某些地方可能无法满足我们的开发需求。此时，我们可以在不修改这些方法代码的情况下，通过猴子补丁用一些
     自己编写的新方法对其进行替代，从而实现一些新的功能。
 
-14) 单例模式
-    指的是在程序运行时确保某个类最多只有一个实例对象。
-
-15) 鸭子类型(duck typing)
-    在鸭子类型中关注的不是对象所属的类，而是一个对象能够如何使用。在Python中编写一个函数，传递实参前其参数的类型
-    并不确定，在函数中使用形参进行操作时，只要传入的对象能够支持该操作程序，就能正常执行。例如：
-        class Person:
-            def CaptureImage(self):
-                print('Person_CaptureImage')
-        class Camera:
-            def CaptureImage(self):
-                print('Camera_CaptureImage')
-        def CaptureImageTest(arg):
-            arg.CaptureImage()
-        if __name__=='__main__':
-            p=Person()
-            c=Camera()
-            CaptureImageTest(p) #输出Person_CaptureImage
-            CaptureImageTest(c) #输出Camera_CaptureImage
-
-    可以看出鸭子类型与前面介绍的多态非常类似，实际上Python中的多态也是借助鸭子类型实现，与C++、Java等语言中的多态并不
-    是同一含义。
-
-
-16) 常用内置函数
+14) 常用内置函数
     a. enumerate函数
         如果希望不仅可以获得每一个元素的值，而且能获取每一个元素的索引，则可以改成如下所示的方式：
             ls = ['Python', 'C++', 'Rust']
