@@ -1,0 +1,545 @@
+1) Python语言特点
+    a. 把高级语言翻译成机器语言有两种方式：一种是编译，一种是解释。其中解释是在程序运行时才对源代码进行逐条语句的翻译并运行；解释性语言编写的程序每执行一次，就要翻译一次，
+        翻译结果不会像编译型语言一样保存在可执行文件中，因此效率较低。Python便是一种解释型语言，但是为了提高效率，Python程序在执行一次之后会自动生成扩展名为.pyc的字节码
+        文件(主程序文件不会生成字节码文件，只有调用的模块才会生成字节码文件)；下次再运行同一个Python程序时，只要源代码没有做过修改，Python就直接将字节码文件翻译成机器语言
+        再执行，大大提高效率。
+    b. Python官方提供了非常多的标准库代码，比如网络编程、输入输出、文件系统、图形处理、数据库、文本处理等。除了内置库还有很多第三方库，如用于科学计算的NumPy、用于Web开发
+        的Django、用于网页爬虫的Scrapy、用于图像处理的OpenCV等。
+    c. Python是一种"胶水语言"，比如可以将不打算公开的部分关键模块、对速度要求高的模块等可以使用C或C++编写，然后在Python中使用它们，可以像胶水一样把这些模块黏合过来，让整
+        个程序同时兼备其他语言的优点，起到了黏合剂的作用。
+    d. 与C/C++不同，Python的语句末尾不需要加分号，所以一行只能有一条语句。
+    e. Python使用强制缩进的方式来区分语句之间的关系，Python语言对行首缩进的方式没有严格的限制，既可以使用空格也可以使用制表符TAB，常用的对代码进行一个层次缩进的方式有：1个
+        制表符、2个空格或4个空格。对于同一层次的代码，必须使用相同的缩进方式，否则会报错。
+    f. 使用Python的os模块可以方便地使用操作系统的相关功能；如创建目录、删除目录等；可以使用Thinter/PyQt框架开发各种桌面软件；Python提供的re模块能支持正则表达式，还提
+        供SGML、XML分析模块，许多程序员使用Python进行XML程序开发；Python提供丰富的模块支持sockets编程,能方便地开发分布式应用程序；在金融分析领域利用Numpy、Pandas、SciPy等
+        数据分析模块可快速完成数据分析工作；在多媒体领域Python的PyOpenGL模块封装了OpenGL应用程序编程接口，能进行二维和三维图像处理；在网络爬虫领域，Python几乎处于霸主地位，
+        提供了Scrapy、Request、BeaufifulSoup、urllib等工具，将网络中的一切数据作为资源，通过自动化程序进行有针对性的数据采集以及处理；等等。
+    g. Python中的所有类型都是类类型，所有的变量都是类对象。
+    h. 在Python中一切皆对象：函数(属于function类)和类(int, list等)都是对象。
+    i. 在Python的PEP8规范中建议每行代码不超过79个字符。
+    j. 在Python3.x的语言环境中，默认使用UTF-8编码，因此可以直接支持中文。
+    h. Python是一种弱类型的语言，变量的类型由其值的类型决定。
+    j. 单行注释用“#”, 多行注释以3个连续的单引号'''或3个连续的双引号"""作为开始符和结束符。
+
+2) pass(可以用三个点...来代替)
+    a. pass表示一个空操作，只起到一个占位符的作用，执行时什么都不做。
+    b. 在某些必要的语句还没有编写的情况下，如果要运行程序，则可以先在必要语句处写上pass,使得程序不存在语法
+        错误使得程序可以正常运行。
+
+3) 三元表达式
+    score = 77
+    result = print("优") if score >= 90 else print("良") if score >= 80 else \
+        print("及格") if score >= 60 else print("差")
+    print(result)   
+
+4) 模块
+    a. 如何避免这个问题：当一个脚本文件单独执行时就执行这些语句，而作为模块导入时，就不执行这些语句。
+        a1. 要实现这个功能，需要用到每个模块中都有的一个全局变量__name__。__name__的作用是获取当前模块的名称，如果当前模块是单独执行的，则其__name__的值就是__main__；
+            否则，如果是作为模块导入，则其__name__的值就是模块的名字。
+        a2. 应用场景：在完成一个模块的编写之前，我们一般会对模块中的功能进行测试，对于这些测试代码，我们只希望在当前模中运行，而在其他程序import这个模块时不执行，就可以
+            借助__name__来实现(将仅在当前模块中运行的代码放在if __name__ == '__main__'下的语句块中)。
+    b. 通过在一个Python脚本文件中导入sys模块后，执行print(sys.argv), 即可看到输出的一个列表，其中第一个元素是脚本文件名。
+    c. 无论是利用import导入模块，还是用from import导入模块中的标识符，在导入同时都可以使用as为模块或标识符起别名。
+    d. 如果一个模块中定义了列表__all__，则"from 模块名 import *" 语句只能导入__all__列表中指定的标识符。比如在一个文件的第一行加入__all__列表的定义"__all__=['myfunc']",则
+        在另一个文件通过from 模块名 import *导入时只能导入myfunc这个标识符，而不是全部的。
+    e. 包(package)
+        e1. 利用包可以将多个关系密切的模块组合在一起，定义一个包，就是创建一个文件夹并在该文件夹下创建一个__init__.py文件(该文件可以是一个空文件，也可以包含包的初始化代码，或
+        者设置__all__列表；在新的Python版本中并不是必须要创建该文件？)，文件夹的名字就是包名。当然也可以在一个文件夹下再创建子文件夹，在子文件夹下创建一个__init__.py文件，则
+        又形成了一个子包。模块可以放在任何一个包或子包中，在导入模块时，需要指定所在的包和子包的名字。例如，如果要导入包A中的模块B，则需要使用import A.B。
+    f. 如果要使用A包的子包C的D模块(其中又d_func函数)，可以通过import A.C.D导入。那么在调用d_func函数时也必须指定完整的名字，即A.C.D.d_func(实参列表)。也可以使用from import方
+        式导入包中的模块，如from A.C import D, 而且在调用D模块中的函数时不需要加包名，如：D.d_func(实参列表)；另外使用from import也可以直接导入模块中的标识符，
+        如from A.C.D import d_func，此时调用d_func函数可直接写作：d_func(实参列表)
+    g. pip的使用
+        pip install --upgrade package-name  //让pip更新一个已安装的包, 比如pip install --upgrade pip更新pip
+        pip install --user paceage-name //只为当前用户安装指定的包。
+
+5) 常用内置数据类型
+    Python中的对象类型分为两种：可变类型(可以对该类型对象中保存的元素值做修改)和不可变类型(该类型对象中保存所保存的元素值不允许修改，只能通过给
+    对象整体赋值来修改对象所保存的数据。但此时实际上就是创建了一个新的不可变类型的对象，而不是修改原对象的值)。
+    a. Number(数字，不可变类型)
+        a1. 有int(整型)、float(浮点型)、complex(复数类型)共三种不同的数字类型。
+        a2. Python中提供了Boolean(布尔)类型，它是int的子类型，在作为数字参与运算时，False自动转为0，True自动转为 1。当给bool函数传入下列参数时，会返回Flase：定义为假的常量，
+            包括None或Flase;任意值为0的数值，如0、0.0、0j等；空的序列或集合，如空字符串(''或"")、空元组(())、空列表([])等。
+        a3. 浮点型使用C语言中的double类型实现。通过使用import sys和print(sys.float_info)可以查看当前环境中浮点数的取值范围和精度。
+        a4. 复数的实部和虚部都是一个浮点数。在生成复数时，也可以使用complex([real[,imag]])如果省略虚部imag,则返回的复数为real+0j。
+        a5 小整数对象池：Python 为了优化速度，避免整数频繁申请和销毁内存空间，把范围在 [-5, 256] 之间的数字放在提前建立好的小整数对象池里面，不会被垃圾回收，在这范围内的数值如果相等，
+            地址也就相同，因为使用的都是同一个对象。
+                a = 257    #在Python中，变量是可以被赋值的标签，也可以说变量指向特定的值。
+                b = 257
+                print(id(a))
+                print(id(b))
+                a = 256
+                b = 256
+                print(id(a))
+                print(id(b))
+                a = -5
+                b = -5
+                print(id(a))
+                print(id(b))
+                a = -6
+                b = -6
+                print(id(a))
+                print(id(b))
+
+    b. String(字符串序列，不可变类型)
+        b1. Python中不区分字符和字符串。
+        b2. Python中的字符串可以写在一对单引号中，也可以写在一对双引号或一对三双引号中。
+        b3. Python中，对序列的下标有二种索引方式，从前向后索引(第一个字符下标为0)和从后向前索引(最后一个字符下标为-1，其他字符的下标是后一个字符下标减1)。截取子串(切片，方法
+            为s[start:stop]或s[start:stop:step]或silce(start:stop:step)，其中不包括stop位置上的这个字符，如果省略start则表示从第一个元素开始，如果省略stop则表示从start位
+            置开始一直到最后一个元素)时既可以使用其中一种下标索引方式，也可以同时混合使用。
+        b4. 如果要截取字符串的一个字符可以使用s[idx]。
+        b5. 使用下标[]虽然可以访问字符串中的元素，但是不能修改。例如s[1] = '1'就会报错。
+        b6. 空字符串直接print(str(""))在屏幕上是看不到的，可以使用print([str("")])，这样的话会输出['']
+
+    c. List(列表序列，可变类型)
+        c1. 列表是可变的，这也意味着可随程序的运行增删元素，列表的长度会动态变化。需要注意的是列表中包含的元素类型可以不相同并且各元素地址并不一定是连续的，每个元素都有自己的
+            地址。列表这个整体本身也有自己的地址。
+        c2. 列表的索引方式与字符串中元素的索引方式完全相同。切片后返回的仍是一个列表；但是如果使用ls[idx]则返回的是其中的一个元素。
+        c3. 需要注意和字符串不同的是使用ls[idx]还可以对元素进行修改。既可以通过ls[idx] = a这种方式修改单个元素的值(a可以是任意类型，包括列表)，也可以通过ls[start:stop] = b
+            这种方式修改一个元素或同时修改连续多个元素的值(b可以是另一个列表)。
+        c4. 创建一个起始于第一个元素终止于最后一个元素的切片[:]，会复制一个列表(创建一个副本)。
+        c5. 使用对象方法sort对列表进行永久排序，修改后再也无法恢复到原来的排列顺序(对列表进行了原地操作)，而使用全局的内置函数sorted对列表进行临时排序(新建了列表的副本，对列表的
+            副本进行的操作。新建操作)
+                def func(string):
+                    return int(string[:-3])
+
+                FileName = ["10.py", "2.py", "8.py", "6.py", "100.py"]
+                FileName.sort(key=func)
+                print(FileName)
+
+    d. Tuple(元组序列，不可变类型)
+        d1. 与list类似，不同的是元组的所有元素都在一对小括号()中，且元组中的元素不能修改。这里需要注意的是严格来说元组是由逗号标识的，小括号()只是让元组看起来更清晰而已。
+            my_tuple = (3,)
+            print(my_tuple) #(3,)
+            my_tuple1 = 3,  #会封包成一个元组，如果只定义一个元素的元组必须加上逗号，若my_tuple1赋为3，输出3
+            print(my_tuple1) #(3,)
+
+    e. Set(集合，set是可变类型，frozenset是不可变类型)
+        e1. 集合中也可以包含多个不同类型的元素，但集合中的各元素无序(集合中的元素是没有顺序的，输出不一定按照定义的顺序输出，并且每次输出的结果可能不一样)、不允许有相同的元素(集合
+            会自动去重)且元素必须是可哈希的对象(可哈希对象是指拥有__hash()__(self)内置函数的对象；需要知道的是列表、集合和字典类型的数据不是可哈希对象，所以它们不能作为集合中的元素)。
+        e2. 集合只能包含不可变的类型元素？
+        e3. 创建集合时，既可以使用{...}，也可以使用set([iterable])函数。但是创建空集合的话只能使用set()，而不能使使用{}，因为{}是用来创建空字典的。
+        e4. iterable为可迭代对象，是指可以一次返回它的一个元素，比如前面提到的字符串、列表、元组都是可迭代的数据类型。
+        e5. 和字符串、列表、元组等序列类型不同，集合中的元素不能使用下标方式访问。集合主要用来做并、交、差等集合运算，以及基于集合进行元素的快速检索。
+        e6. frozenset是不可变的类型，因此其对象方法一般是新建操作(在副本上进行操作)。
+            # frozenset([iterable])函数返回一个新的 frozenset 对象，即不可变的集合，其元素来自于iterable，如果未指定参数，则返回冻结的空集合(set 中的元素必须是不可变类型的，而 
+            # frozenset是可以作为 set元素的)
+            print(frozenset()) # frozenset()
+            print(frozenset("1234")) # frozenset({'4', '3', '1','2'})
+            print(frozenset([1, 2, 3, 4])) # frozenset({1, 2, 3, 4})
+            print(frozenset({"one":1, "two":2, "three":3})) # frozenset({'two', 'three', 'one'})
+
+            set1 = {"four"}
+            set1.add(frozenset({'two', 'three', 'one'}))
+            print(set1) # {frozenset({'one', 'two', 'three'}), 'four'}
+
+            tup = (3, 5, 2, 1, 5, 5)
+            new_set = frozenset(tup)
+            print(new_set)  # frozenset({1, 2, 3, 5})
+            new_tup = tuple(new_set)
+            print(new_tup)  # (1, 2, 3, 5)
+        e7. set的一些运算
+            # 把一个列表变成集合，就会自动去掉重复的元素
+            li = [1, 2, 4, 5, 7, 7, 4, 5]
+            a = set(li)
+            print(a)
+            # 测试多组集合数据之间的交集、差集、并集等关系
+            a = set("abdefga")
+            b = set("abc")
+            c = set("aef")
+            print(c <= a) # 判断c是否是a的子集
+            print(a - b) # 返回a和b的差集
+            print(a | b) # 返回a和b的并集
+            print(a & b) # 返回a和b的交集
+            print(a ^ b) # 返回            
+
+    f. Dictionary(字典，可变类型)
+        f1. 是另一种无序的对象集合。但与集合不同，字典是一种映射类型，每一个元素是一个键(key):值(value)对。在一个字典对象中，键必须是唯一的，即不同元素的键不能相同；另外键必须是可哈
+            希数据, 值可以是任意类型。
+        f2. 键只能是不可变的类型？另外如果键重复，那么重复键对应的值后面会把前面的值覆盖掉。
+        f3. 字典作为可迭代对象时只有键参与。
+        f4. 创建字典时，既可以用{...}，也可以使用dict函数。如果要创建一个空字典可以使用{}或dict()。
+        f5. 如果在创建字典的同时，需要给出字典中的元素，如下创建的字典对象的元素完全相同：
+                a= {'one':1, 'two':2, 'three':3}
+                a= dict(one=1, two=2. three=3) #dict(**kwarg),其中形参 **kwarg是一个或多个赋值表达式。
+                a= dict([('one', 1),('two', 2),('three', 3)]) #其中形参是元组的列表(列表元素为元组)。
+                a= dict({'one':1, 'two':2, 'three':3}) #其中形参是一个已有的字典。
+                a= dict(zip(['one', 'two', 'three'],[1, 2, 3])) #zip返回的是一个迭代器。
+            注意zip函数的参数是多个可迭代的对象(列表等)，功能是将不同对象中对应元素打包成元组，然后返回由这些元组组成的列表。在Pyton3.x中为了减少内存，zip函数返回的是一个对象(迭代器)，
+            可以通过list将其转为列表。
+        f6. dict.fromkeys(iterable[, value])
+                # fromkeys创建一个新字典，以 iterable 的元素作为键，value 作为值，value 默认为 None
+                dic1 = dict.fromkeys(("name", "age", "gender"))
+                print(dic1)
+                dic2 = dict.fromkeys(("name", "age", "gender"), "I don't know!")
+                print(dic2)        
+        f7. 在访问字典中的元素时不能通过数字下标方式访问，而是通过键访问，即[key]。但使用放在方括号内的键从字典中获取感兴趣的值的方法，有的时候可能会引法问题：如果指定的键不存在，就会报错。
+            就字典而言，为避免出现这样的错误，可使用get()方法在指定的键不存在时返回一个默认值(如果指定第二个参数，返回None)。
+                alien_0 = {'color':'green', 'speed':'slow'}
+                #print(alien_0['point']) # 报错
+                point_value = alien_0.get('point', 'No point found')
+                print(point_value)  # No point found
+        f8. 遍历字典
+            以下的，items()返回由字典键组成的一个新视图, values()返回由字典值组成的一个新视图，keys()返回由字典键组成的一个新视图；返回的对象是视图对象，这意味着当字典改变时，视图也
+            会相应改变。这里需要注意，新视图与原数据是有关联的(指向原数据，原数据改变后，新视图随着实时改变)；另外新视图也是可迭代对象(因此也可以转为列表等，转为列表后就和原数据没关系了)。
+                favorite_languages = {
+                    'a':'C',
+                    'b':'C++',
+                    'c':'C',
+                    'd':'Rust'
+                }
+                #遍历键值对
+                for key, value in favorite_languages.items():
+                    print(f"key:{key}, vaule:{value}")
+                #遍历键，keys方法返回的是一个列表
+                for key in favorite_languages.keys():
+                    print(f'key:{key}')
+                #按特定的顺序遍历字典中的所有键
+                for key in sorted(favorite_languages.keys()):
+                    print(f'sorted key:{key}')
+                #遍历值
+                for value in favorite_languages.values():
+                    print(f'value:{value}')
+                #使用集合set剔除字典值的重复项(集合中的每个元素都是独一无二的)
+                for value in set(favorite_languages.values()):
+                    print(f'value by set:{value}')            
+
+6) 推导式
+    a. 列表推导式
+        由一对方括号里面包含一个表达式，后面跟一个 for 子句，然后是零个或多个 for 或 if 子句组成，其结果将是一个新列表，由表达式依据后面的 for 和 if 子句的内容进行求值计算而得出
+            #示例一(嵌套)：
+            matrix = [[1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12]]
+
+            result = [[row[i] for row in matrix] for i in range(4)]
+            #其等价于如下语句
+            result = []
+            for i in range(4):
+                result.append([row[i] for row in matrix])
+
+            result = []
+            for i in range(4):
+                temp = []
+                for row in matrix:
+                    temp.append(row[i])
+                result.append(temp)
+
+            #示例二：
+            FileName = ["10.py", "2.py", "8.py", "6.py", "100.py"]
+            num_lst = [int(i[:-3]) for i in FileName]
+            num_lst.sort()
+            res = [str(j)+".py" for j in num_lst]
+            print(res)
+    b. 集合推导式
+        set1 = {x**2 for x in range(4)}
+        print(set1)
+
+        set1 = {x for x in 'abracadabra' if x not in 'abc'}
+        print(set1)
+    c. 字典推导式
+        #示例一：
+        dic = {k: v for k, v in zip((1, 2, 3), (4, 5, 6))}
+        print(dic)
+        
+        #示例二：
+        FileName = ["10.py", "2.py", "8.py", "6.py", "100.py"]
+        dic = {int(i[:-3]): i for i in FileName}
+        key_lst = sorted(dic)
+        print([dic[j] for j in key_lst])    # 字典对象的索引是魔术方法__getitem__实现的                 
+
+
+7) 浅层拷贝和深层拷贝
+    Python中的赋值语句不复制对象，只是建立引用关联，对于可变数据，有时我们不希望直接对它进行修改，因为这可能会导致一些意外的情况发生，所以我们就可以把它copy一份，对它的副本进行操作。这
+    种copy操作又分为浅层copy和深层copy，比如 list.copy()、dict.copy()、set.copy() 和切片都属于浅层copy。另外在Python标准库中提供的copy模块中，也提供了通用的浅层拷贝(copy.copy())和
+    深层拷贝(copy.deepcopy())操作。
+    a. 浅层拷贝: 只考虑最外层的数据类型。如果最外层的数据类型是可变的，则（最外层）发生拷贝；如果最外层的数据类型是不可变的，则不发生拷贝。
+        a1. 如果被拷贝的对象本身是可变的数据类型，则该数据本身会发生拷贝，但是其中的元素仍为引用关系。
+        a2. 如果被拷贝的对象本身是不可变的数据类型，则浅拷贝不会发生拷贝，只是引用关系而已。
+        综上，执行浅拷贝操作不会发生拷贝的数据类型有：number, str, tuple；执行浅拷贝操作会发生拷贝的数据类型有：list, dict, set
+    b. 深层拷贝:
+        b1. 如果拷贝的对象本身是可变的数据类型，则发生拷贝；
+        b2. 如果拷贝的对象本身是不可变的数据类型，但其中包含有可变的数据，则仍然会对该对象发生拷贝；
+        b3. 如果拷贝的对象本身是不可变的数据类型，并且其中也不包含任何可变的数据类型，则不发生拷贝，实为引用关系。
+        b4. 对于其中的元素是否发生拷贝，可以对该元素以及上述三条进行再次判定。
+        综上，执行深拷贝操作不会发生拷贝的数据类型有：number, str, tuple(其中不存在任何的可变类型数据时) 。执行深拷贝操作会发生拷贝的数据类型有：list, tuple(其中存在任意可变类型数
+        据时)，dict , set
+
+8) 封包和解包
+    a. 封包:将多个值赋值给一个变量时，Python 会自动将这些值封装成元组，这个特性称之为封包。
+    b. 解包:迭代对象都支持解包 。
+        b1:序列赋值过程中的解包:
+            # 可以在其中一个变量前面加一个星号(*)，代表这个变量可接收0个/1个/多个元素，并把它们组成列表来赋值，理解起来类似于不定长参数中的*args。解包过程：先把其他变量根据位置确定对应
+            # 要赋值的元素，剩下的元素都归带星号(*)的变量，组成列表来赋值。
+            a, b, *c, d = (1, 2, 3, 4, 5)
+            print(a, b, c, d) # 1 2 [3, 4] 5
+            a, b, *c, d, e = (1, 2, 3, 4)
+            print(a, b, c, d, e) # 1 2 [] 3 4
+            # 不允许多个带星号(*)的变量，因为会有歧义
+            a, *b, *c, d = (1, 2, 3, 4, 5)
+            print(a, b, c, d)
+            # 这种解包的写法是错误的
+            *a = (1, 2, 3, 4, 5)
+            # 正确的写法应该是这样
+            *a, = (1, 2, 3, 4, 5)
+            print(a) # [1, 2, 3, 4, 5]
+            # 通常约定：当变量不需要使用时, 可以用下划线命名
+            *a, _, _ = (1, 2, 3, 4, 5)
+            print(a) # [1, 2, 3]
+        b2. 在可迭代对象前面加一个星号（*）,此时若可迭代对象为字典的话，解包只有键参与;在字典对象前面加双星（**），这种解包方式主要运用在函数传参的过程中。
+            a = (1, 2, 3, 4, 5)
+            print(*a) # 1 2 3 4 5
+            print(*(1, 2, 3, 4, 5)) # 同上
+            # 在可迭代对象前面加一个星号（*），使其以位置参数的形式传入函数
+            def func(a, b, c, d=None):
+                print(a, b, c, d)
+            tup = (1, 2, 3, 4)
+            dic = {'name': "Tom", 'age': 18, 'height': 188}
+            func(*tup) # 等效于 func(1, 2, 3, 4)
+            func(*dic) # 等效于 func('name', 'age', 'height')
+            # 在字典对象前面加双星（**），使其以关键字参数的形式传入函数
+            def func(a, b, c, d=None):
+                print(a, b, c, d)
+            dic = {'a': "Tom", 'b': 18, 'c': 188, 'd': True}
+            func(**dic) # 等效于 func(a="Tom", b=18, c=188, d=True)
+            dict(**dic) # 等效于 dict(a="Tom", b=18, c=188, d=True)       
+
+9) 命名空间和作用域
+    a. 三种命名空间
+        a1. 内置命名空间( 由builtins模块实现)，在解释器启动的时候会准备好这个命名空间，然后持续到解释器停止，所以不用import就可以直接适用其中的内置函数/类名称等。它是为所有的.py文件服务的。
+        a2. 在模块被读入时会创建一个全局命名空间，它是为当前.py文件服务的。全局命名空间也是持续到解释器退出。      
+                #通过以下命令可以返回全局的命名空间(返回的是一个字典，由此可见全局命名空间记录的东西是字#典实现的)。
+                print(globals())
+        a3. 局部命名空间包含函数中定义的名称，记录了函数的变量、参数等 一个函数的局部命名空间在这个函数被调用时创建，持续到函数结束。
+                #通过在定义的函数中执行如下命令会返回当前局部命名空间(也是由字典来记录)，需要注意的是若将该命令放到全局区域的话输出结果与print(globals())相同。
+                print(locals())
+        命名空间的查找顺序为：局部命名空间 -> 全局命名空间 -> 内置命名空间。所以在局部命名空间print一个未定义的变量，就会区全局命名空间找......
+    b. 四种作用域
+        b1. 在当前作用域如果找不到对应名称，则去更大一级作用域去找，直到最后找不到就会报错.作用域依次增大的顺序为局部作用域（Local）、闭包函数外的函数中（Enclosing，也
+            是一种局部作用域）、全局作用域（Global）、內建作用域（Built-in）。
+        b2. 一般来说，如果一个函数结束，函数内部的变量、参数会被释放掉；而闭包则不同，它在外部函数结束时，会把内部函数中用到的外部函数的变量、参数保存到内部函数的__closure__属性
+            中，以提供给内部函数使用。
+                def outer():
+                    a = c + 2 # Enclosing可以调用全局变量c
+                    def inner():
+                        b = c + 3 # 局部作用域可以调用全局变量c
+                        print(a + b) # 局部作用域可以调用Enclosing变量a
+                    inner()
+
+                c = 1 # 全局变量
+                print(c) # 调用全局变量c
+    c. abs是内置函数、int是内置类，它们都在内建作用域builtins模块中
+        num1 = abs(-100)
+        num2 = int(3.141592653)    
+        
+
+10) 运算符
+    a. 占位运算符(比如%d、%f或%F等)
+        a1. 比如s1='%s上次数学成绩为%5d, 本次成绩为%5d, 成绩提高%08.2F' %('小明'， 85， 90， 5/85)
+        a2. 由于%作为占位符的前缀字符，因此对于有占位符的字符串，表示一个%时需要写成%%；比如执行如下:
+            print('%.2f%%', %(20.35))将输出20.35%。
+    b. 算符运算符(运算对象为数值型数据)
+        b1. /(除)，比如print(10/3)结果为3.3333333333333335。计算机中数据都是二进制存储的，然而十进制
+            小数和二进制之间转换时可能产生精度损失，所以在输出时，结果与实际计算结果之间存在偏差。
+        b2. //(整除)，类似于C/C++中的/，返回a/b的向下取整的整数部分
+        b3. **(乘方)
+        b4. %(取余)，比如print(-15%4)，输出为1，因为-15-(-15/4)*4 = 1
+    c. 赋值运算符
+        c1. 从Python3.8开始引入了海象运算符(:=)，它可以在表达式内部为变量赋值。例如：
+            string = "Hello"
+            print((Lengh:=len(string)) + 5)
+        c2. y+=x等价于y=y+x，区别就是前者为原地操作，而后者为新建操作。类似的还有//=、**=等等都是原地操作。
+        c3. 多目标赋值，比如：
+                a = b = c = [1, 2, 3]
+                a, b, c = [3, 4, 5]
+                [a, b, c] = [3, 4, 5]
+    d. 比较运算符
+        ==、!=、<、>、<=、>=
+    e. 逻辑运算符
+        e1. 优先级：not > and > or
+        e2. 对于and，左边为False,返回左边，否则返回右边。对于or左边为True返回左边，否则返回右边。
+        e3. 注意Node/False/0/空字符串/空列表/空元组/空字典/空集合都被认为是False。
+        e4. 另外有二个内置函数all(iterable)和any(iterable)
+    f. 位运算符
+        &、|、^、<<、>>、~
+    g. 身份运算符(用于比较两个对象是否有同样的内存首地址)
+        g1. is：比如x is y，如果x和y对应同样的存储单元，即同样的内存首地址(id(x) == id(y))，则返回True；否则返回Flase。
+        g2. is not：比如x is not y，如果x和y不对应同样的存储单元，则返回True；否则返回Flase。
+    h. 成员运算符(用于判断一个可迭代对象中是否包含某个元素, 如果可迭代对象为字典则判断键即可)
+        h1. in：比如x in y，如果x是可迭代对象y的一个元素，则返回True; 否则返回False
+        h2. not in：比如x not in y，如果x不是可迭代对象y中的一个元素，则返回True；否则返回False
+    i. 序列运算符(用于字符串、列表、数组等序列的运算符)
+        i1. +(拼接)：x+y,将序列x和序列y中的元素连接，生成一个新的序列。
+        i2. *(重复)：x*n,将序列x中的元素重复n次，生成一个新的序列。
+
+11) 流程控制
+    a. 条件语句(其中elif和else都是可选项)
+        if 条件1:
+            语句序列
+        elif 条件2：
+            语句序列
+        ......
+        else:
+            语句序列
+    b. 循环语句
+        b1. for循环
+            与C/C++中的for循环不同，Python中的for循环用于遍历可迭代对象中的每一个元素，并根据当前访问的元素做数据处理，其语法如下：
+                for 变量名 in 可迭代对象：
+                    语句序列
+            需要注意range([beg],end,[step])函数中step允许为负值，如果beg省略默认从0开始，生成的对象中不包含end。使用for循环时，如果需要遍历一个数列中的所有数字，则通常使用range函数
+            返回一个可迭代对象(这个可迭代对象是一个不可变的序列)。通过list可以将该对象转换为列表。
+        b2. while循环
+            while 循环条件:
+                语句序列
+        b3. break
+            用于跳出for循环或while循环。对于多重循环，跳出它所在的最近的那重循环。
+        b4. continue
+            用于结束本次循环并且开始下一次循环。
+        b5. else
+            在for循环和while循环后面可以有else分支，当for循环已经遍历完或while循环的条件为Flase时，就会执行else分支中的语句。需要注意的是当for或while循环中通过break跳出时，循环后
+            的else分支不会执行。
+
+12) monkey patch(猴子补丁)
+    a. 是指在运行时动态替换已有代码，而不需要修改原始代码。
+    def sum(a, b):
+        return a + b
+    def NewSum(*args):
+        s = 0
+        for i in args:
+            s += i
+        return s
+    
+    sum = NewSum    #将NewSum传给sum, 后面再调用sum函数，实际上就是执行NewSum函数
+    print(sum(1, 2, 3, 4, 5))
+
+    b. 猴子补丁主要用于在不修改已有代码的情况下修改其功能或增加对新功能的支持。例如在使用第三方模块时，模块中的某些地方可能无法满足我们的开发需求。此时，我们可以在不修改这些方法代码的
+    情况下，通过猴子补丁用一些自己编写的新方法对其进行替代，从而实现一些新的功能。
+
+13) 常用内置函数
+    a. print
+        name = "xxx"
+        age = "20"
+
+        print("我是", name, ", 我今年", age, "岁了, ", "明年我", int(age)+1, "岁!", sep="")
+
+        print('我是%s, 我今年%s岁了, 明年我%d岁!' % (name, age, int(age)+1)) # %格式化(传统的格式化方式)
+
+        print('我是{}, 我今年{}岁了, 明年我{}岁!'.format(name, age, int(age)+1)) # format格式化(Python2.6引入)
+        print('我是{v1}, 我今年{v2}岁了, 明年我{v3}岁!'.format(v1=name, v2=age, v3=int(age)+1))
+        print('我是{0}, 我今年{1}岁了, 明年我{2}岁!'.format(name, age, int(age)+1))
+
+        print(f'我是{name}, 我今年{age}岁了, 明年我{int(age)+1}岁!') # f-string格式化(Python3.6引入)
+    
+    b. enumerate
+        如果希望不仅可以获得每一个元素的值，而且能获取每一个元素的索引，则可以改成如下所示的方式：
+            ls = ['Python', 'C++', 'Rust']
+            for k in range(len(ls)):
+                print(k, ls[k])
+        
+        除了上述方式外，还可以使用enumerate函数来访问每个元素的索引，代码如下所示：
+            ls = ['Python', 'C++', 'Rust']
+            for k, v in enumerate(ls): #k保存当前元素的索引，v保存当前元素的值
+                print(k, v)
+        enumerate函数的功能就是将一个可迭代对象组成一个索引序列(enumerate)对象，利用这个索引序列对象可以同时获取每个元素的索引和值。另外enumerate函数还可以指定索引的起始值 
+            ls = ['Python', 'C++', 'Rust']
+            for k, v in enumerate(ls, 1): #索引从1开始(默认为0)
+                print(k, v)
+
+    c. zip(*iterables)
+        c1. 返回一个元组的迭代器(迭代器一定是可迭代对象，只不过只能打印一次)，其中的第 i 个元组包含来自每个可迭代对象的第 i 个元素
+        c2. 当所输入可迭代对象中最短的一个被耗尽时，迭代器将停止迭代
+        c3. 不带参数时，它将返回一个空迭代器
+        c4. 当只有一个可迭代对象参数时，它将返回一个单元组的迭代器
+            result1 = zip("abcd", "efgh")
+            print(list(result1))
+            result2 = zip("abcd", "efg")
+            print(list(result2))
+            result3 = zip()
+            print(list(result3))
+            result4 = zip("abcd")
+            print(list(result4))
+
+    d. filter(function, iterable)
+        d1. function：函数（function 必需能够接受1个实参），也可以为 None。
+        d2. iterable：可迭代对象。
+        d3. 将 iterable 中每个元素作为参数传递给函数，根据函数的返回结果进行判断 True 或 False，将判断为 True 的 iterable 中的元素构建新的迭代器并返回。
+        d4. 如果 function 为 None，直接判断 iterable 中元素 True 或 False，再返回为 True 的元素构建的新的迭代器
+            object1 = filter(lambda x: x-1, [1, 2, 3, False, 4])
+            print(list(object1))
+            object3 = filter(None, [1, 2, 0, 3, False, 4])
+            print(list(object3))
+
+    e. map(func, *iterables)
+        e1. func：函数（func 必需能够接收 iterables 个数的实参）
+        e2. iterables：可迭代对象
+        e3. 用 iterables 中的每个元素作为函数的参数来调用函数，以迭代器形式返回所有结果
+        e4. 当有多个 iterables 对象时，最短的 iterables 耗尽则函数停止; 当有多个 iterables 对象时，最短的 iterables 耗尽则函数停止
+            result = list(map(lambda x, y, z: x+y+z, [1, 2, 3], [3, 2, 1], [1, 3]))
+            print(result)    # [5, 7]
+    
+    f. reduce(function, iterable[, initial])
+        f1. function：函数（function 必需能够接收两个实参）
+        f2. iterable：可迭代对象
+        f3. initial：初始值
+        f4. 在没有指定 initial 参数时，先把 iterable 的前两个元素作为参数调用函数，把这次函数的结果以及iterable 的下一个元素又作为参数再调用函数，以此类推
+        f5. 在指定 initial 参数时，先把 initial 值和 iterable 的第一个元素作为参数调用函数，把这次函数的结果以及 iterable 的下一个元素又作为参数再调用函数，以此类推
+        f6. 如果 iterable 为空，返回 initial ，此时如果没有指定 initial，则报错
+        f7. 如果 iterable 只有一个元素且没有指定 initial，返回该元素
+            from functools import reduce
+            # 过程：10*2 + 2*123 = 266
+            result = reduce(lambda x, y: 10*x + 2*y, [123], 2)
+            print(result)
+
+    g. reverse
+        lst = ['4', '3', '1000', '7', '19']
+        # 内置函数reversed(seq)对给定序列返回一个反向迭代器(迭代器一定是可迭代对象，因此可以将其转换为列表等， 常用的返回迭代器
+        # 的reversed/zip/enumerate/filter/map等。另外需要注意的是迭代器只能从头到尾迭代一次，因此下面第二次打印为空列表)
+        ret = reversed(lst)
+        #内置函数list([iterable])将一个iterable对象转化为列表并返回，如果没有传入参数返回空的列表
+        print(list(ret))    # ['19', '7', '1000', '3', '4']
+        print(list(ret))    # []
+
+    h. 查关键字的方法：
+            help("keywords")
+
+            import keyword
+            print(keyword.kwlist)
+        查内置函数的方法：
+            import builtins
+            print(dir(builtins))
+    
+    i. eval和exec
+        都可以将字符串当成python程序来执行，它们的区别是eval函数只能执行单个表达式，并返回执行的结果；而exec函数还可以执行代码块，无返回值（return None）。
+            # eval(expression[, globals[, locals]]) 
+            # exec(object[, globals[, locals]])
+
+            string = "4345789"
+            lst = [int(i) for i in string]
+            print(sum(lst)) # 40
+
+            print(eval('+'.join(string)))   # 40
+            exec('print('+'+'.join(string)+')') # 40
+
+            # 需要注意的是eval和exec后面二个可选参数用来指定全局命名空间和局部命名空间(字典的形式)。如果
+            # 不指定locals，则globals和locals是相同的，如下所示二条语句相同：
+            print(eval("a+b", {'a':4, 'b':5}))
+            print(eval("a+b", {'a':4, 'b':5}, {'a':4, 'b':5}))
+    j. dir
+          用来收集模块中定义的名称    
+            import builtins
+            # 可以用来收集内置命名空间中builtin中定义的名称。不带参数时，返回当前.py文件中定义好的一些名称。
+            print(dir(builtins))
+    
+    k. char和ord
+        chr(i) 内置函数返回 Unicode 码位为整数 i 的字符，它是 ord() 的逆函数。ord(c)内置函数返回单字符对应的 Unicode 码位，它是 chr() 的逆函数
+            print(chr(97))
+            print(ord('a'))
+
+    l. strip
+        full_name = f"{'zhang'} {'shuaifeng'}"
+        message = f"Come on, {full_name.title()}!   "
+        '''strip删除message中感叹号后面的空格。这里需要注意字符串是不可变的数据类型，对其strip操作时会并不是在原字符串基础上进行原地操作，而是在其副本上进行操作。
+        所以下面将对副本的操作结果关联到原来的变量message，既需要再将新值关联到原来的变量'''
+        message = message.strip()
+        print(message)             
+

@@ -1,0 +1,226 @@
+类与对象(与C++不同，Python中提供的基本数据类型也是类，比如int、float等)
+    a. 与类相关的3个内置函数
+        a1. isinstance(object, classinfo) 和 issubclass(class, classinfo)与继承相关。前者用于判断一个对象所属的类是否是指定类或指定类的子类，
+            后者用于判断一个类是否是另一个类的子类
+        a2. type()用于获取一个对象所属的类；需要注意type(int)返回<class type>，说明int这个类型本身也是一个对象，它是由type生成的(type为metaclass)。
+            '''所有的类都是object的子类(object的__bases__属性为空，其余的都为<class "object">)，包括type'''
+            print(issubclass(type, object))    # 也可以通过print(type.__bases__)查看基类
+            print(issubclass(int, object))
+            print(issubclass(dict, object))
+            '''type是用来生成类对象的(比如int类就是type类生成的对象)，所有类都有type类的实例对象，包括object'''
+            print(isinstance(object, type))
+            print(isinstance(int, type))
+            print(isinstance(dict, type))
+            print(isinstance(type, type))    # 由此可见type是一个类，同时也是一个对象(type的对象)
+
+    b. 可以直接创建新的类，也可以基于一个或多个已有的类创建新的类；既可以创建一个空的类(pass)，然后动态添加属性和方法，也可以在创建类的同时设置
+        属性和方法。类的定义形式如下：
+            class 类名：
+                语句1
+                语句2
+                ...
+                语句N
+    c. 定义了一个类后，就可以创建该类的实例对象，其语法格式为：类名(参数表)
+    d. 属性(包括类属性和对象属性)
+        d1. 类属性既可以通过类名(Python中一切皆对象)调用，也可以通过实例对象去调用：类名或对象名.属性名。然而实例属性只能通过实例对象调用名
+            调用不能通过类名调用。
+        d2. 类属性是所有实例对象所公有的，实例属性是每一个实例对象所私有。另外实例属性只能通过实例对象去修改；类属性也只能通过类名去修改。
+        d3. 当实例属性和类属性同名时，实例对象优先调用实例属性。
+        d4. 私有属性：Python中规定，在定义类时，如果一个类属性名是以“__”开头，则该属性为私有属性。在类的外面不能直接通过类对象直接访问类的私有属性，
+            如果非要访问的话需要在私有属性名前加上“_类名”，即：对象名._类名__私有属性名。另外需要注意也有私有方法，其定义方式也是在方法名前加两个
+            下划线，一般也是在类的内部访问。需要注意的是子类无法继承父类的私有属性和私有方法。 
+        d5. 动态定义类属性和实例属性：当使用实例对象修改的实例属性不存在时，会增加一个实例属性(动态地为已创建地对象绑定新的属性，需要注意当为一个
+            对象动态绑定新的属性后，只是该对象具有该属性，其他对象和类都没有该动态绑定的属性)；当使用类修改的类属性不存在时会增加一个类属性。当然
+            对于方法也是类似。 这种除了在定义类时定义属性和方法外，还可以动态地为已经创建的对象或类绑定新的属性和方法的机制机制称为动态扩展。当然在
+            定义类时，Python也提供了__slots__变量以限制这种可动态扩展的属性。
+        d6. 类中的属性可以直接访问和赋值，这为类的使用者提供了方便，但也带来了问题：类的使用者可能会给一个属性赋上超出有效范围的值。为了解决这个问题，
+            Python提供了@property装饰器，可以将类中属性的访问和赋值操作自动转为方法调用，这样可以在方法中对属性值的取值范围做一些条件限定。        
+    e. 方法
+        e1. 类中的方法分为两类：内置方法和其他方法(对象方法、类方法、静态方法)，其中内置方法是在特定情况下由系统自动执行。
+        e2. 在定义类的对象方法时，要求第一个参数需要对应调用方法时所使用的实例对象(一般约定俗成命名为self，当然也可以使用别的名)。在通过类的
+            实例对象调用类中的普通方法时，并不需要传入self参数的值，self会自动对应调用该方法时所使用的对象。需要注意必须通过实例对象调用，而不能
+            通过类名直接调用(若真需要通过类名调用的话其实也有办法，就是需要手动将实例对象作为第一个参数传入，稍微有点麻烦)。因为通过实例对象调用时
+            会自动将该实例对象传给self，而通过类调用时则不会有这个隐含的参数传递。
+        e4. 类方法是指用@classmethod修饰的方法，其第一个参数是类本身(而不是类的实例对象)。类方法的特点是既可以通过类名直接调用(调用时类方法的第一个
+            参数会隐式接受类)，也可以通过类的实例对象调用(本质上是使用实例对象的类型去调用类方法，即type(实例对象名).类方法名),
+        e5. 静态方法是使用@staticmethod修饰的方法。与类方法相同，静态方法也可以直接通过类名调用，也可以通过类的实例对象调用。与类方法不同的是，静态
+            方法中没有类方法中的第一个参数。静态方法和类方法的区别在继承时会体现出来。
+                @classmethon    # 内置的类方法装饰器
+                def teach(cls, course):    # 类方法：注意这里的cls也是约定俗成的名字。
+                    print(f"{cls.company}的来时在讲{course}课")
+                    print(f"{Teacher.company}的来时在讲{course}课")    #直接使用类名Teacher也可以
+
+                @staticmethod    # 内置的静态方法装饰器
+                def teach(course): # 静态方法，注意这里没有cls，函数体中直接固定使用类名，这也是和类方法的区别
+                    print(f"{Teacher.company}的来时在讲{course}课")    # Teacher是类名
+
+    f. 构造(__init__)和析构(__del__)：创建和销毁对象时自动执行的内置方法
+        f1. __new__用来创建实例对象并返回，__init__用来给返回的实例对象制定属性(初始化)：
+            每一次实例化(类名就像函数那样被调用就是实例化，当然实例对象也可以向函数那样被调用，这需要由内置的__call__来实现)时会
+            自动调用__new__(cls, *args, **kwargs)这个内置方法把需要实例化的类传给作为参数传给cls, 传入的其他参数会给*args和**kwargs进行打包；
+            然后__new__就会根据cls构建出一个实例对象返回给调用方。这里需要注意在自定义类时一般不需要自己再去实现__new__方法了，因为直接使用其父类
+            的__new__就已经够了。
+        f2. __new__返回后就紧接着调用__init__，此时会自动把__new__创建的实例对象作为实参传给其第一个参数self(从这里也可看出self是一个指向实例
+            本身的引用)，另外传入__new__除了cls的其他实参也会传入这里的__init__，然后执行__init__的函数体就会对该实例对象的对象属性进行定
+            制(__init__不能有返回值)。这里需要注意，在自定义类时，若不需要定制属性，直接使用父类的__init__就可以了，不需要再单独实现。
+        f3. 在销毁一个对象时，会自动执行__del__，它负责待销毁对象的资源清理工作，比如关闭文件等。类对象一般在以下3种情况中被销毁：一种是局部变
+            量的作用域结束，比如被调函数执行完毕后，其内部的对象被销毁；一种是使用del删除对象；一种是程序结束时。
+                class Student:
+                    def __init__(self, name='未知'):    #也可以设置默认参数
+                        print('构造方法被调用')
+                        self.name = name
+                    def PrintInfo(self):
+                        print('姓名： %s' %self.name)
+                    def __del__(self):
+                        prinf('姓名为%s的对象被销毁'%self.name)
+                if __name__=='__main__':
+                    stu=Student(“xiaohong”) #创建Student类对象stu,自动执行构造方法
+                    stu.PrintInfo()
+                    del stu
+    g. __call__
+        通过在一个类中定义__call__方法，可以支持如下写法：对象名(实参表) #等价于对象名.__call__(实参表)
+    
+    h. 其他的一些常用内置方法
+        h1. __str__方法：在调用str函数对类对象进行处理时或调用format()和print()时会自动执行，__str__方法的返回值必须是字符串。
+        h2. 比较对象大小的内置方法：
+            __gt__(self, other)   #进行self > other运算时自动执行。
+            __lt__(self, other)
+            __ge__(self, other)
+            __le__(self, other)
+            __eq__(self, other)
+            __ne__(self, other)
+    i. 继承
+        i1. 通过继承，可以基于已有类创建新的类，新类除了继承已有类的所有属性和方法(子类继承后会拥有父类中的所有的非私有属性和方法)，还可以根据需要增加新
+            的属性和方法，另外子类可以对父类中的方法进行重新定义。继承可以分为单继承和多重继承。
+        i2. 定义子类时需要指定父类，其语法格式为：
+            class 子类名(父类名1，父类名2，...,父类名N)
+                语句1
+                语句2
+                ...
+                语句N
+        i3. 在Python中，所有的数据类型都是类类型，所有的变量都是类对象。所有的类都直接或间接继承自object类，即object是Python类层次结构中的第一层的类。我们在
+            定义类时如果没有显式地为其指定父类，则该类会有一个隐含的父类object。
+    
+    j. 多态
+        j1. Python中的多态性是指具有不同内容的方法可以使用相同的方法名，即可以用一个方法名调用 不同内容的方法。
+            class Apple:
+                def change(self):
+                    return '啊~ 我变成了苹果汁!'
+            class Banana:
+                def change(self):
+                    return '啊~ 我变成了香蕉汁!'
+            class Mango:
+                def change(self):
+                    return '啊~ 我变成了芒果汁!'
+            class Juicer:
+                def work(self, fruit):
+                    print(fruit.change())
+            """
+            三个内容不同的change方法使用相同的名字命名,只要改变change的调用对象, 就可以调用不同内容的方法
+            """
+            a = Apple()
+            b = Banana()
+            m = Mango()
+            j = Juicer()
+            j.work(a)
+            j.work(b)
+            j.work(m)
+        j2. 通过多态，可以使得在执行同一条语句时，能够根据实际使用的对象类型决定调用哪个方法。
+        j3. 方法重写：方法重写是指子类可以对从父类继承过来的方法进行重新定义，从而使得子类可以表现出与父类对象不同的行为。方法重写是多态的基础。从下面示例的结果可以看出，
+            在调用PrintPersonInfo时，系统会根据传入的实参对象的类型决定执行哪个类中定义的PrintInfo方法，这就是所谓的多态，即在执行同样代码的情况下，系统会根据对象实际
+            所属的类去调用相应类中的方法。
+                class Persion:
+                    def __init__(self, name):
+                        self.name=name
+                    def PrintInfo(self)
+                        print('姓名：%s'%self.name)
+                class Student(Persion):
+                    def __init__(self, sno, name):
+                        self.sno=sno
+                        self.name=name
+                    def PrintInfo(self)
+                        print('学号:%s, 姓名:%s'%(self.sno, self.name))
+                def PrintPersonInfo(person):
+                    print('结果', end=‘#’)
+                    persion.PrintInfo()
+
+                if __name__=='__main__':
+                    p=Person('xiaoming')
+                    stu=Student('1810100', 'xiaoming')
+                    PrintPersonInfo(p)  # 结果#姓名：xiaoming
+                    PrintPersonInfo(stu)    # 结果#学号: 1810100, 姓名：xiaoming
+    k. super方法
+        k1. super是内置的类，可以调用指定类的父类(可放在类内也可放在类外)，它的适用场景为：在子类重写父类的方法后，想再使用父类的该方法。
+                class Animal:
+                    def eat(self):
+                        print("吃东西")
+                class Cat(Animal):
+                    def eat(self):
+                        print("吃鱼")
+                class Ragdoll(Cat):
+                    def eat(self):
+                        print("喝咖啡")
+
+                rd = Ragdoll()
+                rd.eat() # rd调用Ragdoll类中的对象方法
+                super(Ragdoll, rd).eat() # rd调用Ragdoll父类的对象方法(super返回ragdoll的父类的代理对象)
+                super(Cat, rd).eat() # rd调用Cat父类的对象方法
+
+                c = Cat()
+                c.eat() # c调用Cat类中的对象方法
+                super(Cat, c).eat() # c调用Cat父类的对象方法
+
+        k2. super方法用于获取(返回)父类的代理对象，以执行已在子类中被重写的父类方法。其有两个参数，第一个参数是要获取父类代理对象的类名。第二个参数可以是对象名或类名，
+            如果传入对象名，则该对象所属的类必须是第一个参数指定的类或该类的子类，找到的父类对象的self会绑定到这个对象上；如果传入类名，则该类必须是第一个参数指定的类的
+            子类。super([类名[, 对象名或类名]])      
+        k3. 在一个类A的定义中调用super方法时，可以将两个参数都省略，此时super()等价于super(A, self)，即获取当前A的父类代理对象，且获取到的父类代理对象中的self绑定到
+            当前A类对象的self上。
+    l. 元类(metaclass)
+        l1. 一个metaclass就是一个用来创建其他class的类，而type就是所有类默认的metaclass。可以将metaclass看成创建类时所使用的模板，也可以理解为用于创建类的类。
+        l2. 你可以在定义的时候指定metaclass：例如class Person(object, metaclass=type) #这里扩号中的都是默认的
+        l3. 我们也可以以type作为父类定义自己的metaclass，然后用该metaclass再去创建类，最后用类创建对象。
+                class MyMetaclass(type):    # 自定义一个metaclass
+                    @staticmethod
+                    def __new__(cls, *args, **kwargs):
+                        print(args) # 从打印可以看出，Python会将类名Student、父类object等传进来
+                        class_ = super().__new__(cls, *args)    # 造出的对象是类本身
+                        # class_.freedom = True
+                        if kwargs:
+                            for name, value in kwargs.items():
+                                setattr(class_, name, value)
+                        return class_
+            
+                '''调用元类MyMetaclass的__new__来造Student类，若希望使用元类造出的类里面还有别的属性比如country，可以传递参数'''
+                class Student(object, metaclass=MyMetaclass, country="China", freedom=True):
+                    pass
+
+                print(Student.country, Student.freedom)  # China True
+
+    m. 组合
+        如果一个类中的属性和方法越来越多，也可以将其中的一部分提取出来，组成一个独立的类。将大型类拆分成多个协同工作的小类，这种方法称为组合。
+        m1. 假设有类A，将其一部分方法(比如funcb())和属性拆分独立出来组成类B。这个时候只需要在类A的方法__init__()中添加一行格式形如：" self.bbb = B(xxx) " 
+        的代码。这行代码让Python创建一个新的类B的实例，并将该实例赋给属性bbb。每当__init__()方法被调用时，都将执行该操作，因此现在每个类A实例都包含一个自
+        动创建的类B实例
+        m2. 此时创建一个类A的实例, 并将其赋给变量aaa；可以使用代码 aaa.bbb.funcb() 让Python在实例aaa中查找属性bbb, 并对存储在该属性中的B实例调用funcb()方法。    
+
+    n. 鸭子类型(duck typing)
+        在鸭子类型中关注的不是对象所属的类，而是一个对象能够如何使用。在Python中编写一个函数，传递实参前其参数的类型并不确定，在函数中使用形参进行操作时，只要传入的
+        对象能够支持该操作程序，就能正常执行。例如：
+            class Person:
+                def CaptureImage(self):
+                    print('Person_CaptureImage')
+            class Camera:
+                def CaptureImage(self):
+                    print('Camera_CaptureImage')
+            def CaptureImageTest(arg):
+                arg.CaptureImage()
+            if __name__=='__main__':
+                p=Person()
+                c=Camera()
+                CaptureImageTest(p) #输出Person_CaptureImage
+                CaptureImageTest(c) #输出Camera_CaptureImage
+
+        可以看出鸭子类型与前面介绍的多态非常类似，实际上Python中的多态也是借助鸭子类型实现，与C++、Java等语言中的多态并不是同一含义。
+
+    o. 单例模式
+        指的是在程序运行时确保某个类最多只有一个实例对象。
